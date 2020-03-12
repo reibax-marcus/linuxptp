@@ -22,7 +22,7 @@ CC	= $(CROSS_COMPILE)gcc
 VER     = -DVER=$(version)
 CFLAGS	= -Wall $(VER) $(incdefs) $(DEBUG) $(EXTRA_CFLAGS)
 LDLIBS	= -lm -lrt -pthread $(EXTRA_LDFLAGS)
-PRG	= ptp4l hwstamp_ctl nsm phc2sys phc_ctl pmc timemaster ts2phc
+PRG	= ptp4l hwstamp_ctl nsm phc2sys phc_ctl pmc timemaster ts2phc phc2pwm
 FILTERS	= filter.o mave.o mmedian.o
 SERVOS	= linreg.o ntpshm.o nullf.o pi.o servo.o
 TRANSP	= raw.o transport.o udp.o udp6.o uds.o
@@ -35,7 +35,7 @@ OBJ	= bmc.o clock.o clockadj.o clockcheck.o config.o designated_fsm.o \
  unicast_fsm.o unicast_service.o util.o version.o pwm.o
 
 OBJECTS	= $(OBJ) hwstamp_ctl.o nsm.o phc2sys.o phc_ctl.o pmc.o pmc_agent.o \
- pmc_common.o sysoff.o timemaster.o $(TS2PHC)
+ pmc_common.o sysoff.o timemaster.o $(TS2PHC) phc2pwm.o
 SRC	= $(OBJECTS:.o=.c)
 DEPEND	= $(OBJECTS:.o=.d)
 srcdir	:= $(dir $(lastword $(MAKEFILE_LIST)))
@@ -61,6 +61,8 @@ pmc: config.o hash.o interface.o msg.o phc.o pmc.o pmc_common.o print.o sk.o \
 phc2sys: clockadj.o clockcheck.o config.o hash.o interface.o msg.o \
  phc.o phc2sys.o pmc_agent.o pmc_common.o print.o $(SERVOS) sk.o stats.o \
  sysoff.o tlv.o $(TRANSP) util.o version.o
+
+phc2pwm: util.o pwm.o phc2pwm.o phc.o print.o sk.o
 
 hwstamp_ctl: hwstamp_ctl.o version.o
 
